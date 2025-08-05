@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Explorer</string>
+    <string name="find_country_button_label">Find Country</string>
+    <string name="search_country_screen_title">Search Country</string>
+    <string name="back_button_content_description">Back</string>
+    <string name="search_label">Search</string>
+</resources>
