@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ferrarib.explorer.R
+import com.ferrarib.explorer.core.ui.AppBar
 import com.ferrarib.explorer.presentation.theme.ExplorerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,16 +36,9 @@ fun SearchCountryScreen(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(id = R.string.search_country_screen_title)) },
-                navigationIcon = {
-                    IconButton(onClick = onBackButtonClick) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(id = R.string.back_button_content_description)
-                        )
-                    }
-                }
+            AppBar(
+                title = stringResource(id = R.string.search_country_screen_title),
+                onBackButtonClick = onBackButtonClick
             )
         }
     ) { innerPadding ->
