@@ -59,7 +59,7 @@ Contributions are welcome! If you'd like to contribute, please fork the reposito
 
 ## 📄 License
 
-This project is currently not licensed. You should add a `LICENSE` file (e.g., MIT, Apache 2.0) to specify how others can use your code.
+This project is distributed under the terms of the license. See the [LICENSE](LICENSE) file for more details.
 
 ---
 
