@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization) // Updated: Use version from catalog
     alias(libs.plugins.hilt.android.gradlePlugin)
+    alias(libs.plugins.detekt)
     kotlin("kapt")
 }
 
@@ -61,15 +62,26 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler) // Corrected from hilt-compiler to hilt-android-compiler
+    kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.hilt.navigation.compose) // Added Hilt Navigation Compose dependency
+    implementation(libs.hilt.navigation.compose)
 
     testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+detekt {
+    // Optionally, configure Detekt here. For example:
+    // toolVersion = libs.versions.detekt.get()
+    // source = files("src/main/java")
+    // config = files("config/detekt/detekt.yml")
+    // buildUponDefaultConfig = true
 }
