@@ -1,8 +1,8 @@
 package com.ferrarib.explorer.presentation.search
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ferrarib.explorer.core.ModelViewIntent
+import com.ferrarib.explorer.core.data.models.CountryDto
 import com.ferrarib.explorer.core.di.AppDispatchers
 import com.ferrarib.explorer.core.di.Dispatcher
 import com.ferrarib.explorer.core.utils.AppLogger
@@ -13,6 +13,7 @@ import com.ferrarib.explorer.presentation.search.SearchCountryViewModel.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,33 +24,38 @@ class SearchCountryViewModel @Inject constructor(
     @Dispatcher(AppDispatchers.IO) private val coroutineDispatcher: CoroutineDispatcher,
 ) : ModelViewIntent<Action, Effect, State>() {
 
-    init {
-        // temp
-        executeAction(Action.FindCountry("Brazil"))
-    }
-
     override fun executeAction(action: Action) {
         when (action) {
             is Action.FindCountry -> findCountry(action.name)
         }
     }
 
-    override fun initialValue(): State = State.Loading
+    override fun initialValue(): State = State.Idle
 
     private fun findCountry(name: String) {
         viewModelScope.launch(coroutineDispatcher) {
-            repository.findCountry(name)
+            repository
+                .findCountry(name)
+                .onStart {
+                    appLogger.d("SearchCountryViewModel", "findCountry: onStart")
+                    _state += State.Loading
+                }
                 .catch { exception ->
                     appLogger.e("SearchCountryViewModel", "findCountry: $exception")
+                    _state += State.Error
                 }
                 .collect { countries ->
-                    appLogger.d("SearchCountryViewModel", "countryFound: ${countries.first()}")
+                    appLogger.d("SearchCountryViewModel", "countryFound: $countries")
+                    _state += State.Success(countries)
                 }
         }
     }
 
     sealed interface State {
+        data object Idle : State
         data object Loading : State
+        data object Error : State
+        data class Success(val countries: List<CountryDto>) : State
     }
 
     sealed interface Effect

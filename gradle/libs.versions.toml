@@ -19,6 +19,8 @@ mockitoCore = "5.18.0"  # Updated Mockito Core version
 mockitoKotlin = "6.0.0" # Mockito Kotlin version
 kotlinxCoroutinesTest = "1.10.2"
 detekt = "1.23.8"
+turbine = "1.1.0"
+kotlinTest = "2.0.21"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,6 +48,8 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoCore" } # Uses mockitoCore version
 mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" } # Uses mockitoKotlin version
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlinTest" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

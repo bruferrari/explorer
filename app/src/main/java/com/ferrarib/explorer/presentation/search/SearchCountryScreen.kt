@@ -5,16 +5,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,16 +19,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ferrarib.explorer.R
+import com.ferrarib.explorer.core.data.models.CountryDto
+import com.ferrarib.explorer.core.data.models.CountryName
 import com.ferrarib.explorer.core.ui.AppBar
 import com.ferrarib.explorer.presentation.theme.ExplorerTheme
+import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalMaterial3Api::class)
+private const val DEBOUNCE_TIME_IN_MILLIS = 800L
+
 @Composable
 fun SearchCountryScreen(
     onBackButtonClick: () -> Unit,
     onValueChange: (String) -> Unit,
-    countries: List<String>
+    state: SearchCountryViewModel.State,
 ) {
+    val countries = if (state is SearchCountryViewModel.State.Success) {
+        state.countries.map { it.name.official }
+    } else {
+        emptyList()
+    }
+
     Scaffold(
         topBar = {
             AppBar(
@@ -42,9 +47,16 @@ fun SearchCountryScreen(
             )
         }
     ) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
-            var search by remember { mutableStateOf("") }
+        var search by remember { mutableStateOf("") }
 
+        LaunchedEffect(search) {
+            if (search.isNotEmpty()) {
+                delay(DEBOUNCE_TIME_IN_MILLIS)
+                onValueChange(search)
+            }
+        }
+
+        Column(modifier = Modifier.padding(innerPadding)) {
             TextField(
                 value = search,
                 onValueChange = { searchTerm -> search = searchTerm },
@@ -73,7 +85,22 @@ fun SearchCountryScreenPreview() {
         SearchCountryScreen(
             onBackButtonClick = {},
             onValueChange = {},
-            countries = listOf("Brazil", "Canada", "Germany", "Japan", "United States")
+            state = SearchCountryViewModel.State.Success(
+                countries = listOf(
+                    CountryDto(
+                        name = CountryName(common = "Brazil", official = "Federative Republic of Brazil"),
+                        capital = listOf("Brasília"),
+                        region = "Americas",
+                        subregion = "South America"
+                    ),
+                    CountryDto(
+                        name = CountryName(common = "Germany", official = "Federal Republic of Germany"),
+                        capital = listOf("Berlin"),
+                        region = "Europe",
+                        subregion = "Western Europe"
+                    )
+                )
+            )
         )
     }
 }

@@ -3,13 +3,18 @@ package com.ferrarib.explorer.core
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 
 abstract class ModelViewIntent<Action, Effect, State>: ViewModel() {
 
     protected val _state: MutableStateFlow<State> = MutableStateFlow(value = initialValue())
-    protected val _effect: MutableSharedFlow<Effect> = MutableSharedFlow()
+    val state: StateFlow<State> get() = _state
 
-    abstract fun executeAction(action: Action): Unit
+    protected val _effect: MutableSharedFlow<Effect> = MutableSharedFlow()
+    val effect: SharedFlow<Effect> get() = _effect
+
+    abstract fun executeAction(action: Action)
 
     abstract fun initialValue(): State
 
