@@ -24,7 +24,7 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
         ) {
             MenuButton(
                 label = stringResource(id = R.string.find_country_button_label),
-                onClick = { navController.navigate(SearchCountryRoute) } // Updated navigation call
+                onClick = { navController.navigate(SearchCountryRoute) }
             )
         }
     }

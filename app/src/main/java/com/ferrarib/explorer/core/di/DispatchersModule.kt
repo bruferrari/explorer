@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import javax.inject.Qualifier
 
 @Module
-@InstallIn(SingletonComponent::class) // Or another component if more appropriate
+@InstallIn(SingletonComponent::class)
 object DispatchersModule {
 
     @Provides
@@ -25,7 +25,6 @@ object DispatchersModule {
     fun provideDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 }
 
-// Optional: Create Qualifiers to distinguish between different dispatchers
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class Dispatcher(val dispatcher: AppDispatchers)
