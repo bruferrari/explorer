@@ -42,7 +42,7 @@ class SearchCountryViewModel @Inject constructor(
                 }
                 .catch { exception ->
                     appLogger.e("SearchCountryViewModel", "findCountry: $exception")
-                    _state += State.Error
+                    _state += State.Error(exception.message.orEmpty())
                 }
                 .collect { countries ->
                     appLogger.d("SearchCountryViewModel", "countryFound: $countries")
@@ -54,7 +54,7 @@ class SearchCountryViewModel @Inject constructor(
     sealed interface State {
         data object Idle : State
         data object Loading : State
-        data object Error : State
+        data class Error(val message: String) : State
         data class Success(val countries: List<CountryDto>) : State
     }
 

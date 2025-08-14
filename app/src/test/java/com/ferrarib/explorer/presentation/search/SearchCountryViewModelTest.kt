@@ -74,7 +74,8 @@ class SearchCountryViewModelTest {
         runTest(testDispatcher) {
             val countryName = "NonExistentCountry"
             val expectedException = RuntimeException("Network error")
-            whenever(repository.findCountry(countryName)).thenReturn(flow { throw expectedException })
+            whenever(repository.findCountry(countryName))
+                .thenReturn(flow { throw expectedException })
 
             viewModel.state.test {
                 assertEquals(State.Idle, awaitItem())
@@ -82,7 +83,7 @@ class SearchCountryViewModelTest {
                 viewModel.executeAction(SearchCountryViewModel.Action.FindCountry(countryName))
 
                 assertEquals(State.Loading, awaitItem())
-                assertEquals(State.Error, awaitItem())
+                assertEquals(State.Error(expectedException.message.orEmpty()), awaitItem())
             }
         }
 }
