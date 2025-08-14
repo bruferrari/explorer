@@ -1,5 +1,6 @@
 package com.ferrarib.explorer.presentation.search
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,13 +37,8 @@ fun SearchCountryScreen(
     onBackButtonClick: () -> Unit,
     onValueChange: (String) -> Unit,
     state: SearchCountryViewModel.State,
+    onCountryClick: (CountryDto) -> Unit,
 ) {
-    val countries = if (state is SearchCountryViewModel.State.Success) {
-        state.countries.map { it.name.official }
-    } else {
-        emptyList()
-    }
-
     Scaffold(
         topBar = {
             AppBar(
@@ -77,10 +73,20 @@ fun SearchCountryScreen(
             when (state) {
                 is SearchCountryViewModel.State.Success -> {
                     LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
-                        items(countries) { country ->
+                        items(state.countries) { countryDto ->
+                            val flag = countryDto.flag
+                            val officialName = countryDto.name.official
+                            val displayText = if (!flag.isNullOrBlank()) {
+                                "$flag $officialName"
+                            } else {
+                                officialName
+                            }
                             Text(
-                                text = country,
-                                modifier = Modifier.padding(vertical = 8.dp)
+                                text = displayText,
+                                modifier = Modifier
+                                    .clickable { onCountryClick(countryDto) }
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp)
                             )
                         }
                     }
@@ -127,16 +133,33 @@ fun SearchCountryScreenPreview() {
                         name = CountryName(common = "Brazil", official = "Federative Republic of Brazil"),
                         capital = listOf("Brasília"),
                         region = "Americas",
-                        subregion = "South America"
+                        subregion = "South America",
+                        flag = "🇧🇷"
                     ),
                     CountryDto(
                         name = CountryName(common = "Germany", official = "Federal Republic of Germany"),
                         capital = listOf("Berlin"),
                         region = "Europe",
-                        subregion = "Western Europe"
+                        subregion = "Western Europe",
+                        flag = "🇩🇪"
+                    ),
+                    CountryDto(
+                        name = CountryName(common = "Canada", official = "Canada"),
+                        capital = listOf("Ottawa"),
+                        region = "Americas",
+                        subregion = "North America",
+                        flag = "" // Example of an empty flag
+                    ),
+                    CountryDto(
+                        name = CountryName(common = "Japan", official = "Japan"),
+                        capital = listOf("Tokyo"),
+                        region = "Asia",
+                        subregion = "Eastern Asia"
+                        // Flag is null by default
                     )
                 )
-            )
+            ),
+            onCountryClick = {}
         )
     }
 }

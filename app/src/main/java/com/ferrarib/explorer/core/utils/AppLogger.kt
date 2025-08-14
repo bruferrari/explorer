@@ -1,11 +1,14 @@
 package com.ferrarib.explorer.core.utils
 
 import android.util.Log
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * A wrapper around Android's Log class.
  */
-class AppLogger {
+@Singleton
+class AppLogger @Inject constructor() {
 
     /**
      * Sends a DEBUG log message.

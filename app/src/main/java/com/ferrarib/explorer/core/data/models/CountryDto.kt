@@ -13,6 +13,8 @@ data class CountryDto(
     val region: String? = null,
     @SerialName("subregion")
     val subregion: String? = null,
+    @SerialName("flag")
+    val flag: String? = null
 )
 
 @Serializable
