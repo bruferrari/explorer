@@ -6,7 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable // Keep this
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ferrarib.explorer.core.utils.AppLogger
 import com.ferrarib.explorer.core.utils.AppLoggerEntryPoint
@@ -14,7 +14,7 @@ import com.ferrarib.explorer.presentation.home.HomeScreen
 import com.ferrarib.explorer.presentation.search.SearchCountryScreen
 import com.ferrarib.explorer.presentation.search.SearchCountryViewModel
 import dagger.hilt.android.EntryPointAccessors
-import kotlinx.serialization.Serializable // Add this import
+import kotlinx.serialization.Serializable
 
 @Serializable
 object HomeRoute
@@ -37,7 +37,7 @@ fun AppNavigation() {
         startDestination = HomeRoute
     ) {
         composable<HomeRoute> {
-            HomeScreen(navController = navController)
+            HomeScreen(onNavigateToSearch = { navController.navigate(SearchCountryRoute) })
         }
         composable<SearchCountryRoute> {
             val viewModel: SearchCountryViewModel = hiltViewModel()
