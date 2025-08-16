@@ -43,7 +43,11 @@ class CountryDetailsViewModelTest {
         MockitoAnnotations.openMocks(this)
         testDispatcher = StandardTestDispatcher()
         Dispatchers.setMain(testDispatcher)
-        viewModel = CountryDetailsViewModel(repository, logger, testDispatcher)
+        viewModel = CountryDetailsViewModel(
+            repository,
+            logger,
+            testDispatcher
+        )
     }
 
     @After
@@ -98,7 +102,12 @@ class CountryDetailsViewModelTest {
                 )
 
                 assertEquals(State.Loading, awaitItem())
-                assertEquals(State.Error(expectedException.message.orEmpty()), awaitItem())
+                assertEquals(
+                    State.Error(
+                        expectedException.message.orEmpty()
+                    ),
+                    awaitItem()
+                )
             }
         }
 
