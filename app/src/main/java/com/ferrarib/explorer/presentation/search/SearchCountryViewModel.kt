@@ -38,15 +38,15 @@ class SearchCountryViewModel @Inject constructor(
             repository
                 .findCountry(name)
                 .onStart {
-                    appLogger.d("SearchCountryViewModel", "findCountry: onStart")
+                    appLogger.d("findCountry: onStart")
                     _state += State.Loading
                 }
                 .catch { exception ->
-                    appLogger.e("SearchCountryViewModel", "findCountry: $exception")
+                    appLogger.e("findCountry: $exception")
                     _state += State.Error(exception.message.orEmpty())
                 }
                 .collect { countries ->
-                    appLogger.d("SearchCountryViewModel", "countryFound: $countries")
+                    appLogger.d("countryFound: $countries")
                     _state += State.Success(countries)
                 }
         }
@@ -57,15 +57,15 @@ class SearchCountryViewModel @Inject constructor(
             repository
                 .findCountryFullText(name)
                 .onStart {
-                    appLogger.d("SearchCountryViewModel", "findCountryFullText: onStart")
+                    appLogger.d("findCountryFullText: onStart")
                     _state += State.Loading
                 }
                 .catch { exception ->
-                    appLogger.e("SearchCountryViewModel", "findCountryFullText: $exception")
+                    appLogger.e("findCountryFullText: $exception")
                     _state += State.Error(exception.message.orEmpty())
                 }
                 .collect { countries ->
-                    appLogger.d("SearchCountryViewModel", "countryFoundFullText: $countries")
+                    appLogger.d("countryFoundFullText: $countries")
                     _state += State.Success(countries)
                 }
         }

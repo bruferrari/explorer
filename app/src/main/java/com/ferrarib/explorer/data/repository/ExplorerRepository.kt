@@ -18,7 +18,7 @@ class ExplorerRepository @Inject constructor(
             val result = explorerApi.findCountry(name = name)
             emit(result)
         } catch (e: Exception) {
-            logger.e("ExplorerRepository", "Error fetching country", e)
+            logger.e("Error fetching country", e)
         }
     }
 
@@ -27,7 +27,7 @@ class ExplorerRepository @Inject constructor(
             val result = explorerApi.findCountryFullText(name = name)
             emit(result)
         } catch (e: Exception) {
-            logger.e("ExplorerRepository", "Error fetching country with full text", e)
+            logger.e("Error fetching country with full text", e)
         }
     }
 }

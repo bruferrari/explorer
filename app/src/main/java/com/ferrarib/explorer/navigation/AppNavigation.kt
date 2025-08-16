@@ -54,7 +54,7 @@ fun AppNavigation() {
                 },
                 state = state,
                 onCountryClick = {
-                    logger.i("AppNavigation", "Country clicked: ${it.name.official}")
+                    logger.i("Country clicked: ${it.name.official}")
                 }
             )
         }
