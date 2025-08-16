@@ -119,14 +119,25 @@ class AppLogger @Inject constructor() {
     private fun getCallerTag(): String {
         return try {
             val stackTrace = Thread.currentThread().stackTrace
-            // Find the first stack frame that's not this class or Thread
+            // Find the first stack frame that's not this class, system, or VM classes
             val callerFrame = stackTrace.firstOrNull { frame ->
                 !frame.className.contains("AppLogger") &&
                 !frame.className.contains("Thread") &&
-                !frame.methodName.contains("getStackTrace")
+                !frame.className.contains("VMStack") &&
+                !frame.className.startsWith("java.") &&
+                !frame.className.startsWith("android.") &&
+                !frame.methodName.contains("getStackTrace") &&
+                frame.className.isNotEmpty()
             }
             
-            callerFrame?.className?.substringAfterLast('.')?.take(23) ?: "Unknown"
+            // Clean up the class name for better readability
+            val className = callerFrame?.className?.substringAfterLast('.') ?: "Unknown"
+            val cleanedName = className
+                .substringBefore('$') // Remove synthetic class suffixes first
+                .removeSuffix("Kt") // Remove Kotlin file suffix
+                .take(23) // Apply Android log tag limit after cleaning
+
+            cleanedName.ifEmpty { "Unknown" }
         } catch (_: Exception) {
             "AppLogger"
         }
