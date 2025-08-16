@@ -21,4 +21,13 @@ class ExplorerRepository @Inject constructor(
             logger.e("ExplorerRepository", "Error fetching country", e)
         }
     }
+
+    fun findCountryFullText(name: String): Flow<List<CountryDto>> = flow {
+        try {
+            val result = explorerApi.findCountryFullText(name = name)
+            emit(result)
+        } catch (e: Exception) {
+            logger.e("ExplorerRepository", "Error fetching country with full text", e)
+        }
+    }
 }

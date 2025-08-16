@@ -27,6 +27,7 @@ class SearchCountryViewModel @Inject constructor(
     override fun executeAction(action: Action) {
         when (action) {
             is Action.FindCountry -> findCountry(action.name)
+            is Action.FindCountryFullText -> findCountryFullText(action.name)
         }
     }
 
@@ -51,6 +52,25 @@ class SearchCountryViewModel @Inject constructor(
         }
     }
 
+    private fun findCountryFullText(name: String) {
+        viewModelScope.launch(coroutineDispatcher) {
+            repository
+                .findCountryFullText(name)
+                .onStart {
+                    appLogger.d("SearchCountryViewModel", "findCountryFullText: onStart")
+                    _state += State.Loading
+                }
+                .catch { exception ->
+                    appLogger.e("SearchCountryViewModel", "findCountryFullText: $exception")
+                    _state += State.Error(exception.message.orEmpty())
+                }
+                .collect { countries ->
+                    appLogger.d("SearchCountryViewModel", "countryFoundFullText: $countries")
+                    _state += State.Success(countries)
+                }
+        }
+    }
+
     sealed interface State {
         data object Idle : State
         data object Loading : State
@@ -62,5 +82,6 @@ class SearchCountryViewModel @Inject constructor(
 
     sealed interface Action {
         data class FindCountry(val name: String) : Action
+        data class FindCountryFullText(val name: String) : Action
     }
 }
