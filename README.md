@@ -6,10 +6,11 @@ Explorer is a modern Android application that demonstrates contemporary Android 
 
 *   **🔍 Country Search:** Search for countries by name with real-time debounced input
 *   **🏳️ Country Listing:** View search results with country flags and official names
+*   **📄 Country Details:** Full text search with detailed country information (name, capital, region, subregion)
 *   **⚡ Reactive UI:** Loading states and error handling with smooth user experience
 *   **🏗️ Clean Architecture:** Built with MVI (Model-View-Intent) pattern for maintainable code
 *   **📱 Modern UI:** Edge-to-edge design with Material 3 components
-*   **🔧 Custom Logging:** Centralized logging system for better debugging
+*   **🔧 Custom Logging:** Automatic tagging system for better debugging and monitoring
 
 ## 🛠️ Technologies & Libraries Used
 
@@ -54,13 +55,14 @@ app/src/main/java/com/ferrarib/explorer/
 ├── 🎯 presentation/     # UI Layer (Compose + ViewModels)
 │   ├── home/           # Home screen with navigation menu
 │   ├── search/         # Country search feature
-│   └── theme/          # Material 3 theme configuration
+│   └── countrydetails/ # Detailed country information view
 ├── 📊 data/            # Data Layer
 │   └── repository/     # Repository implementations
 ├── 🔧 core/            # Core Infrastructure
 │   ├── data/          # Network models and API definitions
 │   ├── di/            # Dependency injection modules
-│   ├── ui/            # Reusable UI components
+│   ├── ui/            # Reusable UI components & Material 3 theme
+│   │   └── theme/     # Material 3 theme configuration (Color, Theme, Type)
 │   └── utils/         # Utilities (AppLogger, etc.)
 ├── 🏛️ domain/          # Business Logic Layer
 └── 🧭 navigation/      # App navigation setup
@@ -119,14 +121,6 @@ Contributions are welcome! Please follow these steps:
 *   **Results List:** Clean listing with country flags and official names
 *   **Loading States:** Smooth loading indicators and error handling
 
-## 🎯 Future Enhancements
-
-*   **Country Details:** Detailed view with population, area, currencies, etc.
-*   **Offline Support:** Cache frequently accessed countries
-*   **Favorites:** Save favorite countries for quick access
-*   **Maps Integration:** Show country location on interactive maps
-*   **Dark Theme:** Complete dark mode support
-*   **Accessibility:** Enhanced screen reader and accessibility support
 
 ## 📄 License
 
