@@ -5,4 +5,7 @@
     <string name="back_button_content_description">Back</string>
     <string name="search_label">Search</string>
     <string name="generic_error_message">An unexpected error occurred.</string>
+
+    <!-- Country details -->
+    <string name="country_details_screen_title">Country Details</string>
 </resources>

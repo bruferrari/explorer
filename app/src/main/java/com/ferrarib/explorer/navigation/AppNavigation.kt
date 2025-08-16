@@ -8,8 +8,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.ferrarib.explorer.core.utils.AppLogger
 import com.ferrarib.explorer.core.utils.AppLoggerEntryPoint
+import com.ferrarib.explorer.presentation.countrydetails.CountryDetailsScreen
 import com.ferrarib.explorer.presentation.home.HomeScreen
 import com.ferrarib.explorer.presentation.search.SearchCountryScreen
 import com.ferrarib.explorer.presentation.search.SearchCountryViewModel
@@ -21,6 +23,9 @@ object HomeRoute
 
 @Serializable
 object SearchCountryRoute
+
+@Serializable
+data class CountryDetailsRoute(val countryName: String)
 
 @Composable
 fun AppNavigation() {
@@ -39,6 +44,7 @@ fun AppNavigation() {
         composable<HomeRoute> {
             HomeScreen(onNavigateToSearch = { navController.navigate(SearchCountryRoute) })
         }
+
         composable<SearchCountryRoute> {
             val viewModel: SearchCountryViewModel = hiltViewModel()
             val state by viewModel.state.collectAsState()
@@ -55,6 +61,18 @@ fun AppNavigation() {
                 state = state,
                 onCountryClick = {
                     logger.i("Country clicked: ${it.name.official}")
+                    navController.navigate(CountryDetailsRoute(it.name.official))
+                }
+            )
+        }
+
+        composable<CountryDetailsRoute> { backStackEntry ->
+            val args = backStackEntry.toRoute<CountryDetailsRoute>()
+
+            CountryDetailsScreen(
+                countryName = args.countryName,
+                onBackButtonClick = {
+                    navController.popBackStack()
                 }
             )
         }
