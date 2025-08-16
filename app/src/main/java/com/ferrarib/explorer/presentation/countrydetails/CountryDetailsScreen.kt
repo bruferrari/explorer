@@ -23,7 +23,7 @@ import com.ferrarib.explorer.R
 import com.ferrarib.explorer.core.data.models.CountryDto
 import com.ferrarib.explorer.core.data.models.CountryName
 import com.ferrarib.explorer.core.ui.AppBar
-import com.ferrarib.explorer.presentation.theme.ExplorerTheme
+import com.ferrarib.explorer.core.ui.theme.ExplorerTheme
 
 @Composable
 fun CountryDetailsScreen(

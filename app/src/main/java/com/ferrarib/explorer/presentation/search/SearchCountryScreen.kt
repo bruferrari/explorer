@@ -27,7 +27,7 @@ import com.ferrarib.explorer.R
 import com.ferrarib.explorer.core.data.models.CountryDto
 import com.ferrarib.explorer.core.data.models.CountryName
 import com.ferrarib.explorer.core.ui.AppBar
-import com.ferrarib.explorer.presentation.theme.ExplorerTheme
+import com.ferrarib.explorer.core.ui.theme.ExplorerTheme
 import kotlinx.coroutines.delay
 
 private const val DEBOUNCE_TIME_IN_MILLIS = 800L

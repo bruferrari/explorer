@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.ferrarib.explorer.navigation.AppNavigation
-import com.ferrarib.explorer.presentation.theme.ExplorerTheme
+import com.ferrarib.explorer.core.ui.theme.ExplorerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
