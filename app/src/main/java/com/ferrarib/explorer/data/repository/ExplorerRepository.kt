@@ -19,6 +19,7 @@ class ExplorerRepository @Inject constructor(
             emit(result)
         } catch (e: Exception) {
             logger.e("Error fetching country", e)
+            throw e
         }
     }
 
@@ -28,6 +29,7 @@ class ExplorerRepository @Inject constructor(
             emit(result)
         } catch (e: Exception) {
             logger.e("Error fetching country with full text", e)
+            throw e
         }
     }
 }

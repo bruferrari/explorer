@@ -138,6 +138,19 @@ private fun CountryInfoItem(
                 country.subregion.orNotApplicable()
             )
         )
+        
+        if (country.latLng.size >= 2) {
+            Text(
+                stringResource(
+                    R.string.country_coordinates_label,
+                    stringResource(
+                        R.string.coordinates_format,
+                        country.latLng[0].toFloat(),
+                        country.latLng[1].toFloat()
+                    )
+                )
+            )
+        }
 
         country.maps?.let { maps ->
             Spacer(Modifier.height(16.dp))

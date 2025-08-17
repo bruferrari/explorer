@@ -16,7 +16,9 @@ data class CountryDto(
     @SerialName("flag")
     val flag: String? = null,
     @SerialName("maps")
-    val maps: Maps? = null
+    val maps: Maps? = null,
+    @SerialName("latlng")
+    val latLng: List<Double> = emptyList()
 )
 
 @Serializable

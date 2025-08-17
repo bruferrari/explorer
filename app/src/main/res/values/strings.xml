@@ -15,5 +15,7 @@
     <string name="country_capital_label">Capital: %1$s</string>
     <string name="country_region_label">Region: %1$s</string>
     <string name="country_subregion_label">Subregion: %1$s</string>
+    <string name="country_coordinates_label">Coordinates: %1$s</string>
+    <string name="coordinates_format">%1$.2f, %2$.2f</string>
     <string name="not_applicable">N/A</string>
 </resources>
