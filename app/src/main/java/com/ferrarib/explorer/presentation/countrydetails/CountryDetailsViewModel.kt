@@ -1,5 +1,6 @@
 package com.ferrarib.explorer.presentation.countrydetails
 
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.ferrarib.explorer.core.ModelViewIntent
 import com.ferrarib.explorer.core.data.models.CountryDto
@@ -24,6 +25,12 @@ class CountryDetailsViewModel @Inject constructor(
     override fun executeAction(action: Action) {
         when (action) {
             is Action.FindCountryFullText -> findCountryFullText(action.name)
+            is Action.OpenGoogleMaps -> {
+                _effect += Effect.NavigateToGoogleMaps(action.uri)
+            }
+            is Action.OpenOpenStreetMaps -> {
+                _effect += Effect.NavigateToOpenStreetMaps(action.uri)
+            }
         }
     }
 
@@ -58,7 +65,12 @@ sealed interface State {
 
 sealed interface Action {
     data class FindCountryFullText(val name: String) : Action
+    data class OpenGoogleMaps(val uri: Uri) : Action
+    data class OpenOpenStreetMaps(val uri: Uri) : Action
 }
 
-sealed interface Effect
+sealed interface Effect {
+    data class NavigateToGoogleMaps(val uri: Uri) : Effect
+    data class NavigateToOpenStreetMaps(val uri: Uri) : Effect
+}
 

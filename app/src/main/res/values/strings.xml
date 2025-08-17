@@ -8,4 +8,12 @@
 
     <!-- Country details -->
     <string name="country_details_screen_title">Country Details</string>
+    <string name="open_google_maps_button">Open in Google Maps</string>
+    <string name="open_openstreetmap_button">Open in OpenStreetMap</string>
+    <string name="error_prefix">Error: %1$s</string>
+    <string name="country_name_label">Name: %1$s</string>
+    <string name="country_capital_label">Capital: %1$s</string>
+    <string name="country_region_label">Region: %1$s</string>
+    <string name="country_subregion_label">Subregion: %1$s</string>
+    <string name="not_applicable">N/A</string>
 </resources>

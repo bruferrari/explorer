@@ -14,11 +14,21 @@ data class CountryDto(
     @SerialName("subregion")
     val subregion: String? = null,
     @SerialName("flag")
-    val flag: String? = null
+    val flag: String? = null,
+    @SerialName("maps")
+    val maps: Maps? = null
 )
 
 @Serializable
 data class CountryName(
     val common: String,
     val official: String,
+)
+
+@Serializable
+data class Maps(
+    @SerialName("googleMaps")
+    val googleMaps: String,
+    @SerialName("openStreetMaps")
+    val openStreetMaps: String,
 )

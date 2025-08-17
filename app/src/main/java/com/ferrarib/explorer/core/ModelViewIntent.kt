@@ -11,7 +11,10 @@ abstract class ModelViewIntent<Action, Effect, State>: ViewModel() {
     protected val _state: MutableStateFlow<State> = MutableStateFlow(value = initialValue())
     val state: StateFlow<State> get() = _state
 
-    protected val _effect: MutableSharedFlow<Effect> = MutableSharedFlow()
+    protected val _effect: MutableSharedFlow<Effect> = MutableSharedFlow(
+        replay = 0,
+        extraBufferCapacity = 1
+    )
     val effect: SharedFlow<Effect> get() = _effect
 
     abstract fun executeAction(action: Action)
