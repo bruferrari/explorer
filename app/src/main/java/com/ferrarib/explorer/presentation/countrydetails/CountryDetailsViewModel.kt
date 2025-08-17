@@ -3,6 +3,7 @@ package com.ferrarib.explorer.presentation.countrydetails
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.ferrarib.explorer.core.ModelViewIntent
+import com.ferrarib.explorer.core.Result
 import com.ferrarib.explorer.core.data.models.CountryDto
 import com.ferrarib.explorer.core.di.AppDispatchers
 import com.ferrarib.explorer.core.di.Dispatcher
@@ -10,7 +11,6 @@ import com.ferrarib.explorer.core.utils.AppLogger
 import com.ferrarib.explorer.data.repository.ExplorerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -44,13 +44,17 @@ class CountryDetailsViewModel @Inject constructor(
                     appLogger.d("findCountryFullText: onStart")
                     _state += State.Loading
                 }
-                .catch { exception ->
-                    appLogger.e("findCountryFullText: $exception")
-                    _state += State.Error(exception.message.orEmpty())
-                }
-                .collect { countries ->
-                    appLogger.d("countryFoundFullText: $countries")
-                    _state += State.Success(countries)
+                .collect { result ->
+                    when (result) {
+                        is Result.Success -> {
+                            appLogger.d("countryFoundFullText: ${result.data}")
+                            _state += State.Success(result.data)
+                        }
+                        is Result.Error -> {
+                            appLogger.e("findCountryFullText: ${result.exception}")
+                            _state += State.Error(result.exception.message.orEmpty())
+                        }
+                    }
                 }
         }
     }

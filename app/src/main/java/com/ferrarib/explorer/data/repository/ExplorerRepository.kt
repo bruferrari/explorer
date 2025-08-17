@@ -1,5 +1,6 @@
 package com.ferrarib.explorer.data.repository
 
+import com.ferrarib.explorer.core.Result
 import com.ferrarib.explorer.core.data.ExplorerApi
 import com.ferrarib.explorer.core.data.models.CountryDto
 import com.ferrarib.explorer.core.utils.AppLogger
@@ -14,23 +15,23 @@ class ExplorerRepository @Inject constructor(
     private val explorerApi: ExplorerApi,
     private val logger: AppLogger,
 ) {
-    fun findCountry(name: String): Flow<List<CountryDto>> = flow {
+    fun findCountry(name: String): Flow<Result<List<CountryDto>>> = flow {
         try {
             val result = explorerApi.findCountry(name = name)
-            emit(result)
+            emit(Result.success(result))
         } catch (e: Exception) {
             logger.e("Error fetching country", e)
-            throw e
+            emit(Result.error(e))
         }
     }
 
-    fun findCountryFullText(name: String): Flow<List<CountryDto>> = flow {
+    fun findCountryFullText(name: String): Flow<Result<List<CountryDto>>> = flow {
         try {
             val result = explorerApi.findCountryFullText(name = name)
-            emit(result)
+            emit(Result.success(result))
         } catch (e: Exception) {
             logger.e("Error fetching country with full text", e)
-            throw e
+            emit(Result.error(e))
         }
     }
 }

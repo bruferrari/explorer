@@ -2,6 +2,7 @@ package com.ferrarib.explorer.presentation.search
 
 import androidx.lifecycle.viewModelScope
 import com.ferrarib.explorer.core.ModelViewIntent
+import com.ferrarib.explorer.core.Result
 import com.ferrarib.explorer.core.data.models.CountryDto
 import com.ferrarib.explorer.core.di.AppDispatchers
 import com.ferrarib.explorer.core.di.Dispatcher
@@ -12,7 +13,6 @@ import com.ferrarib.explorer.presentation.search.SearchCountryViewModel.Effect
 import com.ferrarib.explorer.presentation.search.SearchCountryViewModel.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -40,13 +40,17 @@ class SearchCountryViewModel @Inject constructor(
                     appLogger.d("findCountry: onStart")
                     _state += State.Loading
                 }
-                .catch { exception ->
-                    appLogger.e("findCountry: $exception")
-                    _state += State.Error(exception.message.orEmpty())
-                }
-                .collect { countries ->
-                    appLogger.d("countryFound: $countries")
-                    _state += State.Success(countries)
+                .collect { result ->
+                    when (result) {
+                        is Result.Success -> {
+                            appLogger.d("countryFound: ${result.data}")
+                            _state += State.Success(result.data)
+                        }
+                        is Result.Error -> {
+                            appLogger.e("findCountry: ${result.exception}")
+                            _state += State.Error(result.exception.message.orEmpty())
+                        }
+                    }
                 }
         }
     }
