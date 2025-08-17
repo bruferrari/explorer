@@ -9,6 +9,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
+@SuppressWarnings("TooGenericExceptionCaught")
 class ExplorerRepository @Inject constructor(
     private val explorerApi: ExplorerApi,
     private val logger: AppLogger,

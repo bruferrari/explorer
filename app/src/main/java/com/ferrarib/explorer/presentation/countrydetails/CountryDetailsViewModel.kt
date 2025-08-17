@@ -73,4 +73,3 @@ sealed interface Effect {
     data class NavigateToGoogleMaps(val uri: Uri) : Effect
     data class NavigateToOpenStreetMaps(val uri: Uri) : Effect
 }
-

@@ -7,6 +7,7 @@ import javax.inject.Singleton
 /**
  * A wrapper around Android's Log class with automatic tagging.
  */
+@SuppressWarnings("TooManyFunctions")
 @Singleton
 class AppLogger @Inject constructor() {
 

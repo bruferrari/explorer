@@ -130,14 +130,20 @@ fun SearchCountryScreenPreview() {
             state = SearchCountryViewModel.State.Success(
                 countries = listOf(
                     CountryDto(
-                        name = CountryName(common = "Brazil", official = "Federative Republic of Brazil"),
+                        name = CountryName(
+                            common = "Brazil",
+                            official = "Federative Republic of Brazil"
+                        ),
                         capital = listOf("Brasília"),
                         region = "Americas",
                         subregion = "South America",
                         flag = "🇧🇷"
                     ),
                     CountryDto(
-                        name = CountryName(common = "Germany", official = "Federal Republic of Germany"),
+                        name = CountryName(
+                            common = "Germany",
+                            official = "Federal Republic of Germany"
+                        ),
                         capital = listOf("Berlin"),
                         region = "Europe",
                         subregion = "Western Europe",

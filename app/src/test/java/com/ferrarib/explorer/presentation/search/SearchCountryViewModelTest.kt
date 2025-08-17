@@ -86,5 +86,4 @@ class SearchCountryViewModelTest {
                 assertEquals(State.Error(expectedException.message.orEmpty()), awaitItem())
             }
         }
-
 }
