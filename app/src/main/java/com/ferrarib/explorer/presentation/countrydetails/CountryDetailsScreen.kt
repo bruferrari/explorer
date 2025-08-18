@@ -8,13 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -31,17 +28,12 @@ import com.ferrarib.explorer.core.ui.theme.ExplorerTheme
 @Composable
 fun CountryDetailsScreen(
     modifier: Modifier = Modifier,
-    countryName: String,
+    country: Country,
     onBackButtonClick: () -> Unit
 ) {
     val viewModel: CountryDetailsViewModel = hiltViewModel()
-    val state by viewModel.state.collectAsState()
 
     val context = LocalContext.current
-
-    LaunchedEffect(countryName) {
-        viewModel.executeAction(Action.FindCountryFullText(countryName))
-    }
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
@@ -69,7 +61,7 @@ fun CountryDetailsScreen(
     ) { contentPadding ->
         CountryDetailsContent(
             modifier = modifier.padding(contentPadding),
-            state = state,
+            country = country,
             executeAction = viewModel::executeAction
         )
     }
@@ -78,7 +70,7 @@ fun CountryDetailsScreen(
 @Composable
 private fun CountryDetailsContent(
     modifier: Modifier = Modifier,
-    state: State,
+    country: Country,
     executeAction: (Action) -> Unit
 ) {
     Column(
@@ -86,21 +78,11 @@ private fun CountryDetailsContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.padding(16.dp)
     ) {
-        when (state) {
-            is State.Loading, State.Idle -> CircularProgressIndicator()
-
-            is State.Error -> {
-                Text(stringResource(R.string.error_prefix, state.message))
-            }
-
-            is State.Success -> {
-                CountryInfoItem(
-                    modifier = Modifier.fillMaxWidth(),
-                    country = state.countries.first(),
-                    executeAction = executeAction
-                )
-            }
-        }
+        CountryInfoItem(
+            modifier = Modifier.fillMaxWidth(),
+            country = country,
+            executeAction = executeAction
+        )
     }
 }
 

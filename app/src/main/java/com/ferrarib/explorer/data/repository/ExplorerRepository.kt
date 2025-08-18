@@ -26,13 +26,4 @@ class ExplorerRepository @Inject constructor(
         }
     }
 
-    fun findCountryFullText(name: String): Flow<Result<List<Country>>> = flow {
-        try {
-            val result = explorerApi.findCountryFullText(name = name)
-            emit(Result.success(result.toDomain()))
-        } catch (e: Exception) {
-            logger.e("Error fetching country with full text", e)
-            emit(Result.error(e))
-        }
-    }
 }

@@ -1,5 +1,8 @@
 package com.ferrarib.explorer.domain.models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Country(
     val name: String,
     val officialName: String,
@@ -13,6 +16,7 @@ data class Country(
     val population: Long?
 )
 
+@Serializable
 data class Coordinates(
     val latitude: Double,
     val longitude: Double

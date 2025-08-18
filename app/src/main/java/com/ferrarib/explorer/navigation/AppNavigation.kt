@@ -11,12 +11,15 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.ferrarib.explorer.core.utils.AppLogger
 import com.ferrarib.explorer.core.utils.AppLoggerEntryPoint
+import com.ferrarib.explorer.domain.models.Country
+import com.ferrarib.explorer.navigation.CountryNavType
 import com.ferrarib.explorer.presentation.countrydetails.CountryDetailsScreen
 import com.ferrarib.explorer.presentation.home.HomeScreen
 import com.ferrarib.explorer.presentation.search.SearchCountryScreen
 import com.ferrarib.explorer.presentation.search.SearchCountryViewModel
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.serialization.Serializable
+import kotlin.reflect.typeOf
 
 @Serializable
 object HomeRoute
@@ -25,7 +28,7 @@ object HomeRoute
 object SearchCountryRoute
 
 @Serializable
-data class CountryDetailsRoute(val countryName: String)
+data class CountryDetailsRoute(val country: Country)
 
 @Composable
 fun AppNavigation() {
@@ -61,16 +64,18 @@ fun AppNavigation() {
                 state = state,
                 onCountryClick = {
                     logger.i("Country clicked: ${it.officialName}")
-                    navController.navigate(CountryDetailsRoute(it.officialName))
+                    navController.navigate(CountryDetailsRoute(it))
                 }
             )
         }
 
-        composable<CountryDetailsRoute> { backStackEntry ->
+        composable<CountryDetailsRoute>(
+            typeMap = mapOf(typeOf<Country>() to CountryNavType)
+        ) { backStackEntry ->
             val args = backStackEntry.toRoute<CountryDetailsRoute>()
 
             CountryDetailsScreen(
-                countryName = args.countryName,
+                country = args.country,
                 onBackButtonClick = {
                     navController.popBackStack()
                 }
