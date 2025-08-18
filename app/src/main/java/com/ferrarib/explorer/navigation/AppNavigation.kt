@@ -60,8 +60,8 @@ fun AppNavigation() {
                 },
                 state = state,
                 onCountryClick = {
-                    logger.i("Country clicked: ${it.name.official}")
-                    navController.navigate(CountryDetailsRoute(it.name.official))
+                    logger.i("Country clicked: ${it.officialName}")
+                    navController.navigate(CountryDetailsRoute(it.officialName))
                 }
             )
         }

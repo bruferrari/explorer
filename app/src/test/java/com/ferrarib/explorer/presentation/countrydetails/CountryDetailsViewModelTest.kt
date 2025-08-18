@@ -1,8 +1,8 @@
 package com.ferrarib.explorer.presentation.countrydetails
 
 import app.cash.turbine.test
-import com.ferrarib.explorer.core.data.models.CountryDto
-import com.ferrarib.explorer.core.data.models.CountryName
+import com.ferrarib.explorer.core.Result
+import com.ferrarib.explorer.domain.models.Country
 import com.ferrarib.explorer.core.utils.AppLogger
 import com.ferrarib.explorer.data.repository.ExplorerRepository
 import kotlinx.coroutines.Dispatchers
@@ -34,8 +34,17 @@ class CountryDetailsViewModelTest {
     @Mock
     private lateinit var logger: AppLogger
 
-    private val mockCountry = CountryDto(
-        name = CountryName(common = "Mock Country", official = "Mock Country")
+    private val mockCountry = Country(
+        name = "Mock Country",
+        officialName = "Mock Country",
+        capital = emptyList(),
+        region = null,
+        subregion = null,
+        flag = null,
+        googleMapsUrl = null,
+        openStreetMapsUrl = null,
+        coordinates = null,
+        population = null
     )
 
     @Before
@@ -61,14 +70,12 @@ class CountryDetailsViewModelTest {
             val countryName = "United"
             val countries = listOf(
                 mockCountry.copy(
-                    name = CountryName(
-                        common = "United States",
-                        official = "United States of America"
-                    )
+                    name = "United States",
+                    officialName = "United States of America"
                 )
             )
             whenever(repository.findCountryFullText(countryName))
-                .thenReturn(flowOf(countries))
+                .thenReturn(flowOf(Result.success(countries)))
 
             viewModel.state.test {
                 assertEquals(State.Idle, awaitItem())
@@ -90,7 +97,7 @@ class CountryDetailsViewModelTest {
             val countryName = "InvalidSearchTerm"
             val expectedException = RuntimeException("API error")
             whenever(repository.findCountryFullText(countryName))
-                .thenReturn(flow { throw expectedException })
+                .thenReturn(flowOf(Result.error(expectedException)))
 
             viewModel.state.test {
                 assertEquals(State.Idle, awaitItem())
@@ -117,14 +124,12 @@ class CountryDetailsViewModelTest {
             val countryName = "Kingdom"
             val countries = listOf(
                 mockCountry.copy(
-                    name = CountryName(
-                        common = "United Kingdom",
-                        official = "United Kingdom of Great Britain and Northern Ireland"
-                    )
+                    name = "United Kingdom",
+                    officialName = "United Kingdom of Great Britain and Northern Ireland"
                 )
             )
             whenever(repository.findCountryFullText(countryName))
-                .thenReturn(flowOf(countries))
+                .thenReturn(flowOf(Result.success(countries)))
 
             viewModel.state.test {
                 assertEquals(State.Idle, awaitItem())
@@ -148,7 +153,7 @@ class CountryDetailsViewModelTest {
                 override val message: String? = null
             }
             whenever(repository.findCountryFullText(countryName))
-                .thenReturn(flow { throw exceptionWithNullMessage })
+                .thenReturn(flowOf(Result.error(exceptionWithNullMessage)))
 
             viewModel.state.test {
                 assertEquals(State.Idle, awaitItem())

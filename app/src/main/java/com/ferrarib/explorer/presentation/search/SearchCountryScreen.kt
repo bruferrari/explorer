@@ -24,8 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ferrarib.explorer.R
-import com.ferrarib.explorer.core.data.models.CountryDto
-import com.ferrarib.explorer.core.data.models.CountryName
+import com.ferrarib.explorer.domain.models.Country
 import com.ferrarib.explorer.core.ui.AppBar
 import com.ferrarib.explorer.core.ui.theme.ExplorerTheme
 import kotlinx.coroutines.delay
@@ -37,7 +36,7 @@ fun SearchCountryScreen(
     onBackButtonClick: () -> Unit,
     onValueChange: (String) -> Unit,
     state: SearchCountryViewModel.State,
-    onCountryClick: (CountryDto) -> Unit,
+    onCountryClick: (Country) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -73,9 +72,9 @@ fun SearchCountryScreen(
             when (state) {
                 is SearchCountryViewModel.State.Success -> {
                     LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
-                        items(state.countries) { countryDto ->
-                            val flag = countryDto.flag
-                            val officialName = countryDto.name.official
+                        items(state.countries) { country ->
+                            val flag = country.flag
+                            val officialName = country.officialName
                             val displayText = if (!flag.isNullOrBlank()) {
                                 "$flag $officialName"
                             } else {
@@ -84,7 +83,7 @@ fun SearchCountryScreen(
                             Text(
                                 text = displayText,
                                 modifier = Modifier
-                                    .clickable { onCountryClick(countryDto) }
+                                    .clickable { onCountryClick(country) }
                                     .fillMaxWidth()
                                     .padding(vertical = 8.dp)
                             )
@@ -129,39 +128,53 @@ fun SearchCountryScreenPreview() {
             onValueChange = {},
             state = SearchCountryViewModel.State.Success(
                 countries = listOf(
-                    CountryDto(
-                        name = CountryName(
-                            common = "Brazil",
-                            official = "Federative Republic of Brazil"
-                        ),
+                    Country(
+                        name = "Brazil",
+                        officialName = "Federative Republic of Brazil",
                         capital = listOf("Brasília"),
                         region = "Americas",
                         subregion = "South America",
-                        flag = "🇧🇷"
+                        flag = "🇧🇷",
+                        googleMapsUrl = null,
+                        openStreetMapsUrl = null,
+                        coordinates = null,
+                        population = null
                     ),
-                    CountryDto(
-                        name = CountryName(
-                            common = "Germany",
-                            official = "Federal Republic of Germany"
-                        ),
+                    Country(
+                        name = "Germany",
+                        officialName = "Federal Republic of Germany",
                         capital = listOf("Berlin"),
                         region = "Europe",
                         subregion = "Western Europe",
-                        flag = "🇩🇪"
+                        flag = "🇩🇪",
+                        googleMapsUrl = null,
+                        openStreetMapsUrl = null,
+                        coordinates = null,
+                        population = null
                     ),
-                    CountryDto(
-                        name = CountryName(common = "Canada", official = "Canada"),
+                    Country(
+                        name = "Canada",
+                        officialName = "Canada",
                         capital = listOf("Ottawa"),
                         region = "Americas",
                         subregion = "North America",
-                        flag = "" // Example of an empty flag
+                        flag = "", // Example of an empty flag
+                        googleMapsUrl = null,
+                        openStreetMapsUrl = null,
+                        coordinates = null,
+                        population = null
                     ),
-                    CountryDto(
-                        name = CountryName(common = "Japan", official = "Japan"),
+                    Country(
+                        name = "Japan",
+                        officialName = "Japan",
                         capital = listOf("Tokyo"),
                         region = "Asia",
-                        subregion = "Eastern Asia"
-                        // Flag is null by default
+                        subregion = "Eastern Asia",
+                        flag = null, // Flag is null by default
+                        googleMapsUrl = null,
+                        openStreetMapsUrl = null,
+                        coordinates = null,
+                        population = null
                     )
                 )
             ),

@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.ferrarib.explorer.core.ModelViewIntent
 import com.ferrarib.explorer.core.Result
-import com.ferrarib.explorer.core.data.models.CountryDto
+import com.ferrarib.explorer.domain.models.Country
 import com.ferrarib.explorer.core.di.AppDispatchers
 import com.ferrarib.explorer.core.di.Dispatcher
 import com.ferrarib.explorer.core.utils.AppLogger
@@ -64,7 +64,7 @@ sealed interface State {
     data object Idle : State
     data object Loading : State
     data class Error(val message: String) : State
-    data class Success(val countries: List<CountryDto>) : State
+    data class Success(val countries: List<Country>) : State
 }
 
 sealed interface Action {

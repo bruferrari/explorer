@@ -24,9 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ferrarib.explorer.R
-import com.ferrarib.explorer.core.data.models.CountryDto
-import com.ferrarib.explorer.core.data.models.CountryName
-import com.ferrarib.explorer.core.data.models.Maps
+import com.ferrarib.explorer.domain.models.Country
 import com.ferrarib.explorer.core.ui.AppBar
 import com.ferrarib.explorer.core.ui.theme.ExplorerTheme
 
@@ -110,20 +108,20 @@ private fun CountryDetailsContent(
 @Composable
 private fun CountryInfoItem(
     modifier: Modifier = Modifier,
-    country: CountryDto,
+    country: Country,
     executeAction: (Action) -> Unit
 ) {
     Column(modifier = modifier) {
         Text(
             stringResource(
                 R.string.country_name_label,
-                country.name.official
+                country.officialName
             )
         )
         Text(
             stringResource(
                 R.string.country_capital_label,
-                country.capital?.joinToString(", ").orNotApplicable()
+                country.capital.joinToString(", ").ifBlank { stringResource(R.string.not_applicable) }
             )
         )
         Text(
@@ -145,38 +143,42 @@ private fun CountryInfoItem(
             )
         )
         
-        if (country.latLng.size >= 2) {
+        country.coordinates?.let { coordinates ->
             Text(
                 stringResource(
                     R.string.country_coordinates_label,
                     stringResource(
                         R.string.coordinates_format,
-                        country.latLng[0].toFloat(),
-                        country.latLng[1].toFloat()
+                        coordinates.latitude.toFloat(),
+                        coordinates.longitude.toFloat()
                     )
                 )
             )
         }
 
-        country.maps?.let { maps ->
+        if (country.googleMapsUrl != null || country.openStreetMapsUrl != null) {
             Spacer(Modifier.height(16.dp))
 
-            Button(
-                onClick = {
-                    executeAction(Action.OpenGoogleMaps(maps.googleMaps.toUri()))
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(stringResource(R.string.open_google_maps_button))
+            country.googleMapsUrl?.let { googleMapsUrl ->
+                Button(
+                    onClick = {
+                        executeAction(Action.OpenGoogleMaps(googleMapsUrl.toUri()))
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(stringResource(R.string.open_google_maps_button))
+                }
             }
 
-            Button(
-                onClick = {
-                    executeAction(Action.OpenOpenStreetMaps(maps.openStreetMaps.toUri()))
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(stringResource(R.string.open_openstreetmap_button))
+            country.openStreetMapsUrl?.let { openStreetMapsUrl ->
+                Button(
+                    onClick = {
+                        executeAction(Action.OpenOpenStreetMaps(openStreetMapsUrl.toUri()))
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(stringResource(R.string.open_openstreetmap_button))
+                }
             }
         }
 
@@ -192,20 +194,17 @@ private fun String?.orNotApplicable() = this ?: stringResource(R.string.not_appl
 fun CountryInfoItemPreview() {
     ExplorerTheme {
         CountryInfoItem(
-            country = CountryDto(
-                name = CountryName(
-                    common = "Brazil",
-                    official = "Federative Republic of Brazil"
-                ),
+            country = Country(
+                name = "Brazil",
+                officialName = "Federative Republic of Brazil",
                 capital = listOf("Brasília"),
                 region = "Americas",
                 subregion = "South America",
                 flag = "🇧🇷",
                 population = 215313498,
-                maps = Maps(
-                    googleMaps = "https://goo.gl/maps/pzEanpDMBs4WLDAAaA",
-                    openStreetMaps = "https://www.openstreetmap.org/relation/59470"
-                )
+                googleMapsUrl = "https://goo.gl/maps/pzEanpDMBs4WLDAAaA",
+                openStreetMapsUrl = "https://www.openstreetmap.org/relation/59470",
+                coordinates = null
             ),
             executeAction = {}
         )

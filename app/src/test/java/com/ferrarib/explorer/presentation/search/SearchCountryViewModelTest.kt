@@ -1,8 +1,8 @@
 package com.ferrarib.explorer.presentation.search
 
 import app.cash.turbine.test
-import com.ferrarib.explorer.core.data.models.CountryDto
-import com.ferrarib.explorer.core.data.models.CountryName
+import com.ferrarib.explorer.core.Result
+import com.ferrarib.explorer.domain.models.Country
 import com.ferrarib.explorer.core.utils.AppLogger
 import com.ferrarib.explorer.data.repository.ExplorerRepository
 import com.ferrarib.explorer.presentation.search.SearchCountryViewModel.State
@@ -35,8 +35,17 @@ class SearchCountryViewModelTest {
     @Mock
     private lateinit var logger: AppLogger
 
-    private val mockCountry = CountryDto(
-        name = CountryName(common = "Mock Country", official = "Mock Country")
+    private val mockCountry = Country(
+        name = "Mock Country",
+        officialName = "Mock Country",
+        capital = emptyList(),
+        region = null,
+        subregion = null,
+        flag = null,
+        googleMapsUrl = null,
+        openStreetMapsUrl = null,
+        coordinates = null,
+        population = null
     )
 
     @Before
@@ -57,7 +66,7 @@ class SearchCountryViewModelTest {
         runTest(testDispatcher) {
             val countryName = "Germany"
             val countries = listOf(mockCountry)
-            whenever(repository.findCountry(countryName)).thenReturn(flowOf(countries))
+            whenever(repository.findCountry(countryName)).thenReturn(flowOf(Result.success(countries)))
 
             viewModel.state.test {
                 assertEquals(State.Idle, awaitItem())
@@ -75,7 +84,7 @@ class SearchCountryViewModelTest {
             val countryName = "NonExistentCountry"
             val expectedException = RuntimeException("Network error")
             whenever(repository.findCountry(countryName))
-                .thenReturn(flow { throw expectedException })
+                .thenReturn(flowOf(Result.error(expectedException)))
 
             viewModel.state.test {
                 assertEquals(State.Idle, awaitItem())
