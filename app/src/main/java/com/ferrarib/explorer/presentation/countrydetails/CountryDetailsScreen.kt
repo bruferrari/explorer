@@ -138,6 +138,12 @@ private fun CountryInfoItem(
                 country.subregion.orNotApplicable()
             )
         )
+        Text(
+            stringResource(
+                R.string.country_population_label,
+                country.population?.let { "%,d".format(it) }.orNotApplicable()
+            )
+        )
         
         if (country.latLng.size >= 2) {
             Text(
@@ -195,6 +201,7 @@ fun CountryInfoItemPreview() {
                 region = "Americas",
                 subregion = "South America",
                 flag = "🇧🇷",
+                population = 215313498,
                 maps = Maps(
                     googleMaps = "https://goo.gl/maps/pzEanpDMBs4WLDAAaA",
                     openStreetMaps = "https://www.openstreetmap.org/relation/59470"
