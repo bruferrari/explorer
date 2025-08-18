@@ -9,6 +9,4 @@ interface ExplorerApi {
     @GET("name/{name}")
     suspend fun findCountry(@Path("name") name: String): List<CountryDto>
 
-    @GET("name/{name}?fullText=true")
-    suspend fun findCountryFullText(@Path("name") name: String): List<CountryDto>
 }
