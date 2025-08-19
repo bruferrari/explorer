@@ -20,7 +20,9 @@ data class CountryDto(
     @SerialName("latlng")
     val latLng: List<Double> = emptyList(),
     @SerialName("population")
-    val population: Long? = null
+    val population: Long? = null,
+    @SerialName("flags")
+    val flags: Flags,
 )
 
 @Serializable
@@ -35,4 +37,10 @@ data class Maps(
     val googleMaps: String,
     @SerialName("openStreetMaps")
     val openStreetMaps: String,
+)
+
+@Serializable
+data class Flags(
+    val png: String,
+    val svg: String,
 )

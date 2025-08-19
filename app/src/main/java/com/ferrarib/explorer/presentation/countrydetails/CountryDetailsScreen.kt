@@ -186,7 +186,8 @@ fun CountryInfoItemPreview() {
                 population = 215313498,
                 googleMapsUrl = "https://goo.gl/maps/pzEanpDMBs4WLDAAaA",
                 openStreetMapsUrl = "https://www.openstreetmap.org/relation/59470",
-                coordinates = null
+                coordinates = null,
+                flagUrl = "https://flagcdn.com/w320/br.png"
             ),
             executeAction = {}
         )

@@ -16,7 +16,8 @@ fun CountryDto.toDomain(): Country = Country(
     coordinates = if (latLng.size >= 2) {
         Coordinates(latitude = latLng[0], longitude = latLng[1])
     } else null,
-    population = population
+    population = population,
+    flagUrl = flags.png,
 )
 
 fun List<CountryDto>.toDomain(): List<Country> = map { it.toDomain() }

@@ -13,7 +13,8 @@ data class Country(
     val googleMapsUrl: String?,
     val openStreetMapsUrl: String?,
     val coordinates: Coordinates?,
-    val population: Long?
+    val population: Long?,
+    val flagUrl: String?
 )
 
 @Serializable

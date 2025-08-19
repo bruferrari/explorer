@@ -34,7 +34,11 @@ class ExplorerRepositoryTest {
         flag = "🇧🇷",
         maps = null,
         latLng = listOf(-14.235004, -51.92528),
-        population = 215313498
+        population = 215313498,
+        flags = com.ferrarib.explorer.core.data.models.Flags(
+            png = "https://flagcdn.com/w320/br.png",
+            svg = "https://flagcdn.com/w320/br.svg"
+        )
     )
 
     @Before
@@ -65,6 +69,7 @@ class ExplorerRepositoryTest {
             assertEquals(215313498L, country.population)
             assertEquals(-14.235004, country.coordinates?.latitude)
             assertEquals(-51.92528, country.coordinates?.longitude)
+            assertEquals("https://flagcdn.com/w320/br.png", country.flagUrl)
             
             awaitComplete()
         }

@@ -45,7 +45,8 @@ class SearchCountryViewModelTest {
         googleMapsUrl = null,
         openStreetMapsUrl = null,
         coordinates = null,
-        population = null
+        population = null,
+        flagUrl = "https://flagcdn.com/w320/br.png"
     )
 
     @Before
