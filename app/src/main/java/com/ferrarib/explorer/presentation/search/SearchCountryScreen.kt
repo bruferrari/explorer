@@ -51,7 +51,7 @@ fun SearchCountryScreen(
     Scaffold(
         topBar = {
             ExplorerAppBar(
-                title = "Explorer"
+                title = stringResource(R.string.app_title)
             )
         }
     ) { innerPadding ->
@@ -72,7 +72,7 @@ fun SearchCountryScreen(
             OutlinedTextField(
                 value = search,
                 onValueChange = { searchTerm -> search = searchTerm },
-                placeholder = { Text("Search for a country..") },
+                placeholder = { Text(stringResource(R.string.search_placeholder)) },
                 trailingIcon = {
                     if (search.isNotEmpty()) {
                         IconButton(
@@ -83,7 +83,7 @@ fun SearchCountryScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.Close,
-                                contentDescription = "Clear search"
+                                contentDescription = stringResource(R.string.clear_search_content_description)
                             )
                         }
                     }
@@ -169,14 +169,14 @@ private fun EmptyState(
         }
         
         Text(
-            text = "Explore the world",
+            text = stringResource(R.string.empty_state_title),
             style = MaterialTheme.typography.headlineSmall,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         
         Text(
-            text = "Search for any country to discover information,\nmaps, and more",
+            text = stringResource(R.string.empty_state_description),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)

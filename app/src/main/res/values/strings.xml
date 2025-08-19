@@ -19,4 +19,11 @@
     <string name="country_population_label">Population: %1$s</string>
     <string name="coordinates_format">%1$.2f, %2$.2f</string>
     <string name="not_applicable">N/A</string>
+
+    <!-- Search Screen -->
+    <string name="app_title">Explorer</string>
+    <string name="search_placeholder">Search for a country..</string>
+    <string name="clear_search_content_description">Clear search</string>
+    <string name="empty_state_title">Explore the world</string>
+    <string name="empty_state_description">Search for any country to discover information,\nmaps, and more</string>
 </resources>
