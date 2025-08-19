@@ -34,6 +34,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -63,6 +65,15 @@ fun SearchCountryScreen(
         }
     ) { innerPadding ->
         var search by remember { mutableStateOf("") }
+        val focusRequester = remember { FocusRequester() }
+        
+        LaunchedEffect(Unit) {
+            focusRequester.requestFocus()
+
+            if (state is SearchCountryViewModel.State.Success && search.isEmpty()) {
+                onClearSearchClick()
+            }
+        }
 
         LaunchedEffect(search) {
             if (search.isNotEmpty()) {
@@ -77,6 +88,10 @@ fun SearchCountryScreen(
                 .fillMaxSize()
         ) {
             OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .focusRequester(focusRequester),
                 value = search,
                 onValueChange = { searchTerm -> search = searchTerm },
                 placeholder = { Text(stringResource(R.string.search_placeholder)) },
@@ -95,9 +110,6 @@ fun SearchCountryScreen(
                         }
                     }
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
                 shape = RoundedCornerShape(12.dp)
             )
 
