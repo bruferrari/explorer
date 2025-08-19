@@ -27,6 +27,7 @@ class SearchCountryViewModel @Inject constructor(
     override fun executeAction(action: Action) {
         when (action) {
             is Action.FindCountry -> findCountry(action.name)
+            is Action.ClearSearch -> resetSearchState()
         }
     }
 
@@ -55,6 +56,9 @@ class SearchCountryViewModel @Inject constructor(
         }
     }
 
+    private fun resetSearchState() {
+        _state += State.Idle
+    }
 
     sealed interface State {
         data object Idle : State
@@ -67,5 +71,6 @@ class SearchCountryViewModel @Inject constructor(
 
     sealed interface Action {
         data class FindCountry(val name: String) : Action
+        data object ClearSearch : Action
     }
 }

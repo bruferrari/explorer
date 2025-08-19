@@ -2,6 +2,10 @@ package com.ferrarib.explorer.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val ExplorerPurple = Color(0xFF7E22CE)
+val ExplorerPurpleLight = Color(0xFFB266F2)
+val ExplorerPurpleDark = Color(0xFF6A1B9A)
+
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)

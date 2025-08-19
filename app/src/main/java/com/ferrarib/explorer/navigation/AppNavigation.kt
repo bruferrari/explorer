@@ -12,7 +12,6 @@ import androidx.navigation.toRoute
 import com.ferrarib.explorer.core.utils.AppLogger
 import com.ferrarib.explorer.core.utils.AppLoggerEntryPoint
 import com.ferrarib.explorer.domain.models.Country
-import com.ferrarib.explorer.navigation.CountryNavType
 import com.ferrarib.explorer.presentation.countrydetails.CountryDetailsScreen
 import com.ferrarib.explorer.presentation.home.HomeScreen
 import com.ferrarib.explorer.presentation.search.SearchCountryScreen
@@ -42,7 +41,7 @@ fun AppNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = HomeRoute
+        startDestination = SearchCountryRoute
     ) {
         composable<HomeRoute> {
             HomeScreen(onNavigateToSearch = { navController.navigate(SearchCountryRoute) })
@@ -58,13 +57,13 @@ fun AppNavigation() {
                         SearchCountryViewModel.Action.FindCountry(searchTerm)
                     )
                 },
-                onBackButtonClick = {
-                    navController.popBackStack()
-                },
                 state = state,
                 onCountryClick = {
                     logger.i("Country clicked: ${it.officialName}")
                     navController.navigate(CountryDetailsRoute(it))
+                },
+                onClearSearchClick = {
+                    viewModel.executeAction(SearchCountryViewModel.Action.ClearSearch)
                 }
             )
         }

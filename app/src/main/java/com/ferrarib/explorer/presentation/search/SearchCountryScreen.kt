@@ -1,17 +1,26 @@
 package com.ferrarib.explorer.presentation.search
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -21,11 +30,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ferrarib.explorer.R
 import com.ferrarib.explorer.domain.models.Country
-import com.ferrarib.explorer.core.ui.AppBar
+import com.ferrarib.explorer.core.ui.ExplorerAppBar
 import com.ferrarib.explorer.core.ui.theme.ExplorerTheme
 import kotlinx.coroutines.delay
 
@@ -33,16 +43,15 @@ private const val DEBOUNCE_TIME_IN_MILLIS = 800L
 
 @Composable
 fun SearchCountryScreen(
-    onBackButtonClick: () -> Unit,
     onValueChange: (String) -> Unit,
     state: SearchCountryViewModel.State,
     onCountryClick: (Country) -> Unit,
+    onClearSearchClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
-            AppBar(
-                title = stringResource(id = R.string.search_country_screen_title),
-                onBackButtonClick = onBackButtonClick
+            ExplorerAppBar(
+                title = "Explorer"
             )
         }
     ) { innerPadding ->
@@ -60,13 +69,29 @@ fun SearchCountryScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            TextField(
+            OutlinedTextField(
                 value = search,
                 onValueChange = { searchTerm -> search = searchTerm },
-                label = { Text(stringResource(id = R.string.search_label)) },
+                placeholder = { Text("Search for a country..") },
+                trailingIcon = {
+                    if (search.isNotEmpty()) {
+                        IconButton(
+                            onClick = {
+                                onClearSearchClick()
+                                search = ""
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = "Clear search"
+                            )
+                        }
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(16.dp),
+                shape = RoundedCornerShape(12.dp)
             )
 
             when (state) {
@@ -112,9 +137,50 @@ fun SearchCountryScreen(
                     }
                 }
 
-                SearchCountryViewModel.State.Idle -> Unit
+                SearchCountryViewModel.State.Idle -> EmptyState()
             }
         }
+    }
+}
+
+@Composable
+private fun EmptyState(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .size(120.dp)
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Search,
+                contentDescription = null,
+                modifier = Modifier.size(80.dp),
+                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
+            )
+        }
+        
+        Text(
+            text = "Explore the world",
+            style = MaterialTheme.typography.headlineSmall,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        
+        Text(
+            text = "Search for any country to discover information,\nmaps, and more",
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+        )
     }
 }
 
@@ -124,7 +190,6 @@ fun SearchCountryScreen(
 fun SearchCountryScreenPreview() {
     ExplorerTheme {
         SearchCountryScreen(
-            onBackButtonClick = {},
             onValueChange = {},
             state = SearchCountryViewModel.State.Success(
                 countries = listOf(
@@ -178,7 +243,8 @@ fun SearchCountryScreenPreview() {
                     )
                 )
             ),
-            onCountryClick = {}
+            onCountryClick = {},
+            onClearSearchClick = {}
         )
     }
 }
