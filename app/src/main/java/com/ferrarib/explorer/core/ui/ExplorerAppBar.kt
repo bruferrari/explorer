@@ -17,27 +17,6 @@ import com.ferrarib.explorer.core.ui.theme.ExplorerPurple
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBar(
-    modifier: Modifier = Modifier,
-    title: String,
-    onBackButtonClick: () -> Unit
-) {
-    TopAppBar(
-        modifier = modifier,
-        title = { Text(title) },
-        navigationIcon = {
-            IconButton(onClick = onBackButtonClick) {
-                Icon(
-                    Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(id = R.string.back_button_content_description)
-                )
-            }
-        }
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
 fun ExplorerAppBar(
     modifier: Modifier = Modifier,
     title: String,
