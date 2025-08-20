@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.border
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -114,29 +115,10 @@ fun SearchCountryScreen(
             )
 
             when (state) {
-                is SearchCountryViewModel.State.Success -> {
-                    LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
-                        items(state.countries) { country ->
-                            Row(
-                                modifier = Modifier
-                                    .clickable { onCountryClick(country) }
-                                    .fillMaxWidth()
-                                    .padding(vertical = 12.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Start
-                            ) {
-                                FlagImage(country)
-
-                                Spacer(modifier = Modifier.width(12.dp))
-
-                                Text(
-                                    text = country.officialName,
-                                    style = MaterialTheme.typography.bodyLarge
-                                )
-                            }
-                        }
-                    }
-                }
+                is SearchCountryViewModel.State.Success -> CountriesList(
+                    state = state,
+                    onCountryClick = onCountryClick,
+                )
 
                 is SearchCountryViewModel.State.Error -> {
                     Box(
@@ -162,6 +144,35 @@ fun SearchCountryScreen(
                 }
 
                 SearchCountryViewModel.State.Idle -> EmptyState()
+            }
+        }
+    }
+}
+
+@Composable
+private fun CountriesList(
+    state: SearchCountryViewModel.State.Success,
+    modifier: Modifier = Modifier,
+    onCountryClick: (Country) -> Unit,
+) {
+    LazyColumn(modifier = modifier.padding(horizontal = 16.dp)) {
+        items(state.countries) { country ->
+            Row(
+                modifier = Modifier
+                    .clickable { onCountryClick(country) }
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
+            ) {
+                FlagImage(country)
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Text(
+                    text = country.officialName,
+                    style = MaterialTheme.typography.bodyLarge
+                )
             }
         }
     }

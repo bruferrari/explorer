@@ -22,7 +22,7 @@ import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ferrarib.explorer.R
 import com.ferrarib.explorer.domain.models.Country
-import com.ferrarib.explorer.core.ui.AppBar
+import com.ferrarib.explorer.core.ui.ExplorerAppBar
 import com.ferrarib.explorer.core.ui.theme.ExplorerTheme
 
 @Composable
@@ -53,7 +53,7 @@ fun CountryDetailsScreen(
 
     Scaffold(
         topBar = {
-            AppBar(
+            ExplorerAppBar(
                 title = stringResource(id = R.string.country_details_screen_title),
                 onBackButtonClick = onBackButtonClick
             )

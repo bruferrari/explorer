@@ -40,7 +40,8 @@ fun AppBar(
 @Composable
 fun ExplorerAppBar(
     modifier: Modifier = Modifier,
-    title: String
+    title: String,
+    onBackButtonClick: (() -> Unit)? = null
 ) {
     TopAppBar(
         modifier = modifier,
@@ -49,6 +50,17 @@ fun ExplorerAppBar(
                 text = title,
                 color = Color.White
             ) 
+        },
+        navigationIcon = {
+            onBackButtonClick?.run {
+                IconButton(onClick = this) {
+                    Icon(
+                        Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(id = R.string.back_button_content_description),
+                        tint = Color.White
+                    )
+                }
+            }
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = ExplorerPurple
