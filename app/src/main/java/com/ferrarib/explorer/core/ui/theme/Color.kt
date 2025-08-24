@@ -18,3 +18,6 @@ val Pink40 = Color(0xFF7D5260)
 val SearchBackground = Color(0xFFF3F4F6)
 val SearchFieldBackground = Color.White
 val FlagPlaceholderBackground = Color.Gray
+
+// Country Details Screen Colors
+val MapPlaceholderBackground = Color(0xFF81D4FA)

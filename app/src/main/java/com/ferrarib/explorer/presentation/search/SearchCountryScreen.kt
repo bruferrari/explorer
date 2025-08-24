@@ -55,6 +55,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ferrarib.explorer.R
+import com.ferrarib.explorer.core.ui.CountryCard
 import com.ferrarib.explorer.core.ui.ExplorerAppBar
 import com.ferrarib.explorer.core.ui.theme.ExplorerTheme
 import com.ferrarib.explorer.core.ui.theme.FlagPlaceholderBackground
@@ -176,77 +177,9 @@ private fun CountriesList(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(state.countries) { country ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onCountryClick(country) },
-                shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        FlagImage(
-                            modifier = Modifier.size(width = 64.dp, height = 40.dp),
-                            country = country
-                        )
-
-                        Spacer(modifier = Modifier.width(12.dp))
-
-                        Column {
-                            Text(
-                                text = country.name,
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            
-                            if (country.capital.isNotEmpty()) {
-                                Text(
-                                    text = country.capital.first(),
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        }
-                    }
-
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
-            }
+            CountryCard(country = country, onCountryClick = onCountryClick)
         }
     }
-}
-
-@Composable
-private fun FlagImage(
-    country: Country,
-    modifier: Modifier = Modifier
-) {
-    AsyncImage(
-        model = country.flagUrl,
-        contentDescription = "Flag of ${country.name}",
-        modifier = modifier
-            .clip(shape = RoundedCornerShape(8.dp))
-            .background(FlagPlaceholderBackground),
-        contentScale = ContentScale.Crop,
-        error = painterResource(R.drawable.ic_globe)
-    )
 }
 
 @Composable
