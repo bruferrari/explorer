@@ -12,14 +12,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,6 +43,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -85,6 +94,7 @@ fun SearchCountryScreen(
 
         Column(
             modifier = Modifier
+                .background(Color(0xFFF3F4F6))
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
@@ -92,6 +102,7 @@ fun SearchCountryScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
+                    .background(Color.White)
                     .focusRequester(focusRequester),
                 value = search,
                 onValueChange = { searchTerm -> search = searchTerm },
@@ -155,24 +166,65 @@ private fun CountriesList(
     modifier: Modifier = Modifier,
     onCountryClick: (Country) -> Unit,
 ) {
-    LazyColumn(modifier = modifier.padding(horizontal = 16.dp)) {
+    LazyColumn(
+        modifier = modifier
+            .fillMaxHeight()
+            .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
         items(state.countries) { country ->
-            Row(
+            Card(
                 modifier = Modifier
-                    .clickable { onCountryClick(country) }
                     .fillMaxWidth()
-                    .padding(vertical = 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
+                    .clickable { onCountryClick(country) },
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
-                FlagImage(country)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        FlagImage(
+                            modifier = Modifier.size(width = 64.dp, height = 40.dp),
+                            country = country
+                        )
 
-                Spacer(modifier = Modifier.width(12.dp))
+                        Spacer(modifier = Modifier.width(12.dp))
 
-                Text(
-                    text = country.officialName,
-                    style = MaterialTheme.typography.bodyLarge
-                )
+                        Column {
+                            Text(
+                                text = country.name,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            
+                            if (country.capital.isNotEmpty()) {
+                                Text(
+                                    text = country.capital.first(),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                    }
+
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
             }
         }
     }
@@ -187,14 +239,8 @@ private fun FlagImage(
         model = country.flagUrl,
         contentDescription = "Flag of ${country.name}",
         modifier = modifier
-            .width(32.dp)
-            .height(24.dp)
-            .background(Color.Gray)
-            .border(
-                width = 0.5.dp,
-                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                shape = RoundedCornerShape(2.dp)
-            ),
+            .clip(shape = RoundedCornerShape(8.dp))
+            .background(Color.Gray),
         contentScale = ContentScale.Crop,
         error = painterResource(R.drawable.ic_globe)
     )
