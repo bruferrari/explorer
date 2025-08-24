@@ -57,6 +57,9 @@ import coil.compose.AsyncImage
 import com.ferrarib.explorer.R
 import com.ferrarib.explorer.core.ui.ExplorerAppBar
 import com.ferrarib.explorer.core.ui.theme.ExplorerTheme
+import com.ferrarib.explorer.core.ui.theme.FlagPlaceholderBackground
+import com.ferrarib.explorer.core.ui.theme.SearchBackground
+import com.ferrarib.explorer.core.ui.theme.SearchFieldBackground
 import com.ferrarib.explorer.domain.models.Country
 import kotlinx.coroutines.delay
 
@@ -94,7 +97,7 @@ fun SearchCountryScreen(
 
         Column(
             modifier = Modifier
-                .background(Color(0xFFF3F4F6))
+                .background(SearchBackground)
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
@@ -102,7 +105,7 @@ fun SearchCountryScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
-                    .background(Color.White)
+                    .background(SearchFieldBackground)
                     .focusRequester(focusRequester),
                 value = search,
                 onValueChange = { searchTerm -> search = searchTerm },
@@ -240,7 +243,7 @@ private fun FlagImage(
         contentDescription = "Flag of ${country.name}",
         modifier = modifier
             .clip(shape = RoundedCornerShape(8.dp))
-            .background(Color.Gray),
+            .background(FlagPlaceholderBackground),
         contentScale = ContentScale.Crop,
         error = painterResource(R.drawable.ic_globe)
     )
