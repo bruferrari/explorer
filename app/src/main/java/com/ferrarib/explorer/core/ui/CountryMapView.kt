@@ -38,10 +38,8 @@ fun CountryMapView(
                 isVerticalMapRepetitionEnabled = false
                 setScrollableAreaLimitDouble(null)
                 
-                // Enable zoom controls with proper positioning
                 zoomController.setVisibility(org.osmdroid.views.CustomZoomButtonsController.Visibility.ALWAYS)
                 
-                // Set proper layout parameters to constrain the view
                 layoutParams = android.view.ViewGroup.LayoutParams(
                     android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                     android.view.ViewGroup.LayoutParams.MATCH_PARENT
