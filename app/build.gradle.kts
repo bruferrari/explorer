@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.coil.compose)
+    implementation("org.osmdroid:osmdroid-android:6.1.16")
 
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
