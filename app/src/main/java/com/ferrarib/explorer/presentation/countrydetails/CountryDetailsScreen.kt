@@ -3,7 +3,6 @@ package com.ferrarib.explorer.presentation.countrydetails
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,8 +20,6 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -32,22 +29,20 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
 import com.ferrarib.explorer.R
 import com.ferrarib.explorer.core.ui.CountryCard
-import com.ferrarib.explorer.domain.models.Country
+import com.ferrarib.explorer.core.ui.CountryMapView
 import com.ferrarib.explorer.core.ui.ExplorerAppBar
 import com.ferrarib.explorer.core.ui.theme.ExplorerTheme
-import com.ferrarib.explorer.core.ui.theme.MapPlaceholderBackground
+import com.ferrarib.explorer.domain.models.Coordinates
+import com.ferrarib.explorer.domain.models.Country
 
 @Composable
 fun CountryDetailsScreen(
@@ -102,7 +97,14 @@ private fun CountryDetailsContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        MapPlaceholder(country = country)
+        country.coordinates?.let { coordinates ->
+            CountryMapView(
+                coordinates = coordinates,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+            )
+        }
 
         CountryCard(
             modifier = Modifier.padding(16.dp),
@@ -130,42 +132,6 @@ private fun CountryDetailsContent(
     }
 }
 
-@Composable
-private fun MapPlaceholder(
-    country: Country,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .background(MapPlaceholderBackground),
-        contentAlignment = Alignment.TopStart
-    ) {
-        Card(
-            modifier = Modifier.padding(16.dp),
-            shape = RoundedCornerShape(8.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface
-            )
-        ) {
-            Column(
-                modifier = Modifier.padding(12.dp)
-            ) {
-                Text(
-                    text = country.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = "View larger map",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-        }
-    }
-}
 
 @Composable
 private fun CountryInfoSection(
@@ -309,7 +275,7 @@ fun CountryDetailsScreenPreview() {
                 population = 215313498,
                 googleMapsUrl = "https://goo.gl/maps/pzEanpDMBs4WLDAAaA",
                 openStreetMapsUrl = "https://www.openstreetmap.org/relation/59470",
-                coordinates = null,
+                coordinates = Coordinates(latitude = -14.235004, longitude = -51.92528),
                 flagUrl = "https://flagcdn.com/w320/br.png"
             ),
             onBackButtonClick = {}

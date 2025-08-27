@@ -19,6 +19,7 @@
     <string name="country_population_label">Population: %1$s</string>
     <string name="coordinates_format">%1$.2f, %2$.2f</string>
     <string name="not_applicable">N/A</string>
+    <string name="country_location">Country Location</string>
 
     <!-- Search Screen -->
     <string name="app_title">Explorer</string>
